@@ -10,8 +10,6 @@ if exists("g:loaded_nerdtree_shell_exec_menuitem")
 endif
 
 let g:loaded_nerdtree_shell_exec_menuitem = 1
-let s:haskdeinit = system("ps -e") =~ 'kdeinit'
-let s:hasdarwin = system("uname -s") =~ 'Darwin'
 
 call NERDTreeAddMenuItem({
       \ 'text': 'e(x)ecute',
@@ -19,6 +17,7 @@ call NERDTreeAddMenuItem({
       \ 'callback': 'NERDTreeExecute' })
 
 function! NERDTreeExecute()
+	echomsg "fuck"
   let l:oldssl=&shellslash
   set noshellslash
   let treenode = g:NERDTreeFileNode.GetSelected()
@@ -29,19 +28,21 @@ function! NERDTreeExecute()
   else
     let args = shellescape(path,1)." > /dev/null"
   end
+	"echomsg matchend(args,'.png') == -1
 
-  if has("unix") && executable("gnome-open") && !s:haskdeinit
-    exe "silent !gnome-open ".args
-    let ret= v:shell_error
-  elseif has("unix") && executable("kde-open") && s:haskdeinit
-    exe "silent !kde-open ".args
-    let ret= v:shell_error
-  elseif has("unix") && executable("open") && s:hasdarwin
-    exe "silent !open ".args
-    let ret= v:shell_error
-  elseif has("win32") || has("win64")
-    exe "silent !start explorer ".shellescape(path,1)
-  end
+	if(matchend(args,'.png') != -1 || matchend(args,'.jpg') != -1)
+		exe "silent !feh ".args
+	elseif(matchend(args,'.pdf') != -1 )
+		exe "silent !nohup foxitreader ".args." 2>&1 &"
+	elseif(matchend(args,'.doc') != -1 || (matchend(args,'.docx') != -1))
+		exe "silent !nohup wps ".args." 2>&1 &"
+	elseif(matchend(args,'.ppt') != -1 || (matchend(args,'.pptx') != -1))
+		exe "silent !nohup wpp ".args." 2>&1 &"
+	elseif(matchend(args,'.xls') != -1 || (matchend(args,'.xlsx') != -1))
+		exe "silent !nohup et ".args." 2>&1 &"
+	elseif(matchend(args,'.mp4') != -1 || (matchend(args,'.mkv') != -1))
+		exe "silent !nohup ffplay ".args." 2>&1 &"
+	end
   let &shellslash=l:oldssl
   redraw!
 endfunction
