@@ -33,7 +33,7 @@ function! NERDTreeExecute()
 	if(matchend(args,'.png') != -1 || matchend(args,'.jpg') != -1)
 		exe "silent !feh ".args
 	elseif(matchend(args,'.pdf') != -1 )
-		exe "silent !nohup zathura ".args." 2>&1 &"
+		exe "silent !nohup mupdf ".args." 2>&1 &"
 	elseif(matchend(args,'.doc') != -1 || (matchend(args,'.docx') != -1))
 		exe "silent !nohup wps ".args." 2>&1 &"
 	elseif(matchend(args,'.ppt') != -1 || (matchend(args,'.pptx') != -1))
