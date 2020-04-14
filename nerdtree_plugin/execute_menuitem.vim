@@ -30,18 +30,20 @@ function! NERDTreeExecute()
   end
 	"echomsg matchend(args,'.png') == -1
 
-	if(matchend(args,'.png') != -1 || matchend(args,'.jpg') != -1)
+	if(matchend(args,'.png') != -1 || matchend(args,'.jpg') || matchend(args,'.jpeg') || matchend(args,'.JPG') || matchend(args,'.PNG') || matchend(args,'.svg') || matchend(args,'.tif') != -1)
 		exe "silent !feh ".args
 	elseif(matchend(args,'.pdf') != -1 )
 		exe "silent !nohup mupdf ".args." 2>&1 &"
-	elseif(matchend(args,'.doc') != -1 || (matchend(args,'.docx') != -1))
+	elseif(matchend(args,'.doc') != -1 || matchend(args,'.docx') != -1)
 		exe "silent !nohup wps ".args." 2>&1 &"
-	elseif(matchend(args,'.ppt') != -1 || (matchend(args,'.pptx') != -1))
+	elseif(matchend(args,'.ppt') != -1 || matchend(args,'.pptx') != -1)
 		exe "silent !nohup wpp ".args." 2>&1 &"
-	elseif(matchend(args,'.xls') != -1 || (matchend(args,'.xlsx') != -1))
+	elseif(matchend(args,'.xls') != -1 || matchend(args,'.xlsx') != -1)
 		exe "silent !nohup et ".args." 2>&1 &"
-	elseif(matchend(args,'.mp4') != -1 || (matchend(args,'.mkv') != -1))
+	elseif(matchend(args,'.mp4') != -1 || matchend(args,'.mkv')  || matchend(args,'.mp44') || matchend(args,'.flv') != -1)
 		exe "silent !nohup ffplay ".args." 2>&1 &"
+	elseif(matchend(args,'.xz') != -1 || matchend(args,'.tar') || matchend(args,'.tar') != -1)                                      
+    exe "silent !nohup tar -xvf ".args
 	end
   let &shellslash=l:oldssl
   redraw!
